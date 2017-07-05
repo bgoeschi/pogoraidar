@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -27,15 +29,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnT
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		FragmentManager manager = getSupportFragmentManager();
-
-		if (TwitterCore.getInstance().getSessionManager().getActiveSession() == null) {
-			manager.beginTransaction().replace(R.id.content, new LoginFragment(), TAG_CURRENT_FRAGMENT).commit();
-		} else {
-			manager.beginTransaction().replace(R.id.content, new TweetListFragment(), TAG_CURRENT_FRAGMENT).commit();
-		}
 		getLocation();
-
 	}
 
 	@Override
@@ -51,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnT
 
 	private void getLocation() {
 		// Get the location manager
-		LocationManager locationManager = (LocationManager)
+		final LocationManager locationManager = (LocationManager)
 				getSystemService(LOCATION_SERVICE);
 
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -67,6 +61,41 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnT
 
 		if (location != null) {
 			User.get().setCurrentLocation(location);
+			updateUi();
+		} else {
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
+				@Override
+				public void onLocationChanged(Location location) {
+					Log.d("LocationManager", "location received");
+					User.get().setCurrentLocation(location);
+					updateUi();
+					locationManager.removeUpdates(this);
+				}
+
+				@Override
+				public void onStatusChanged(String s, int i, Bundle bundle) {
+					Log.d("LocationManager", "status changed");
+				}
+
+				@Override
+				public void onProviderEnabled(String s) {
+					Log.d("LocationManager", "provider enabled");
+				}
+
+				@Override
+				public void onProviderDisabled(String s) {
+					Log.d("LocationManager", "provider disabled");
+				}
+			}, null);
+		}
+	}
+
+	private void updateUi() {
+		FragmentManager manager = getSupportFragmentManager();
+		if (TwitterCore.getInstance().getSessionManager().getActiveSession() == null) {
+			manager.beginTransaction().replace(R.id.content, new LoginFragment(), TAG_CURRENT_FRAGMENT).commit();
+		} else {
+			manager.beginTransaction().replace(R.id.content, new TweetListFragment(), TAG_CURRENT_FRAGMENT).commit();
 		}
 	}
 
