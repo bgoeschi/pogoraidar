@@ -19,6 +19,7 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.params.Geocode;
 
 import bgoeschi.at.pogoraidar.R;
+import bgoeschi.at.pogoraidar.User;
 import bgoeschi.at.pogoraidar.databinding.FragmentTweetListBinding;
 
 public class TweetListFragment extends Fragment {
@@ -40,13 +41,16 @@ public class TweetListFragment extends Fragment {
 			return;
 		}
 
+		double latitude = User.get().getCurrentLocation().getLatitude();
+		double longitude = User.get().getCurrentLocation().getLongitude();
 		TwitterApiClient client = TwitterCore.getInstance().getApiClient();
-		client.getSearchService().tweets("#zib2", new Geocode(48.2111219, 16.372768, 10, Geocode.Distance.KILOMETERS), null, null,
-				null, null, null, null, null, false).enqueue(new Callback<Search>() {
+		client.getSearchService().tweets(null, new Geocode(latitude, longitude, 10, Geocode.Distance.KILOMETERS), null, null, null,
+				null, null, null, null, false).enqueue(new Callback<Search>() {
 			@Override
 			public void success(Result<Search> result) {
 				for (Tweet tweet : result.data.tweets) {
-					binding.fragmentTweetListText.append("--" + tweet.place+ "--" + tweet.text + "\n\n");
+					binding.fragmentTweetListText.append("--" + (tweet.place != null ? tweet.place.fullName : "") + "--" + tweet.text +
+							"\n\n");
 				}
 			}
 
