@@ -1,3 +1,6 @@
 <resources>
 	<string name="app_name">PoGoRaidar</string>
+	<string name="message_label">Enter Message</string>
+	<string name="send_message">post raid</string>
+	<string name="message_sent_successfully">message sent</string>
 </resources>

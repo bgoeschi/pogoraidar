@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<ScrollView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-		<TextView
-			android:id="@+id/fragment_tweet_list_text"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/message_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_label"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-	</ScrollView>
+        <EditText
+            android:id="@+id/message_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/message_label"
+            android:layout_toRightOf="@+id/message_label"
+            android:maxLength="100"/>
+
+        <Button
+            android:id="@+id/send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/message_input"
+            android:layout_centerHorizontal="true"
+            android:text="@string/send_message" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/send_message"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fragment_tweet_list_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+    </RelativeLayout>
+
 </layout>

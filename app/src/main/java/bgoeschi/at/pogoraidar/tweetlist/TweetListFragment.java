@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -21,28 +22,60 @@ import com.twitter.sdk.android.core.services.params.Geocode;
 import bgoeschi.at.pogoraidar.R;
 import bgoeschi.at.pogoraidar.User;
 import bgoeschi.at.pogoraidar.databinding.FragmentTweetListBinding;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class TweetListFragment extends Fragment {
 
-	FragmentTweetListBinding binding;
+    private FragmentTweetListBinding binding;
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tweet_list, container, false);
-		return binding.getRoot();
-	}
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tweet_list, container, false);
+        return binding.getRoot();
+    }
 
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hasSession()) {
+                    postRaidarTweet();
+                }
+            }
+        });
+        if (hasSession()) {
+            loadTweets();
+        }
+    }
 
-		if (TwitterCore.getInstance().getSessionManager().getActiveSession() == null) {
-			return;
-		}
+    private void postRaidarTweet() {
+        double latitude = User.get().getCurrentLocation().getLatitude();
+        double longitude = User.get().getCurrentLocation().getLongitude();
+        TwitterCore.getInstance().getApiClient()
+                .getStatusesService().update(binding.messageInput.getText().toString()+ " #pogoraidar",
+                null, false, latitude, longitude, null, true, false, null).enqueue(new retrofit2.Callback<Tweet>() {
+            @Override
+            public void onResponse(Call<Tweet> call, Response<Tweet> response) {
+                binding.messageInput.getText().clear();
+                Toast.makeText(getContext(), getString(R.string.message_sent_successfully), Toast.LENGTH_SHORT).show();
+                loadTweets();
+                Log.d("Success", response.toString());
+            }
 
-		double latitude = User.get().getCurrentLocation().getLatitude();
-		double longitude = User.get().getCurrentLocation().getLongitude();
+            @Override
+            public void onFailure(Call<Tweet> call, Throwable t) {
+                Log.e("Failure", t.getMessage());
+            }
+        });
+    }
+
+    private void loadTweets() {
+        double latitude = User.get().getCurrentLocation().getLatitude();
+        double longitude = User.get().getCurrentLocation().getLongitude();
 		TwitterApiClient client = TwitterCore.getInstance().getApiClient();
 		client.getSearchService().tweets(null, new Geocode(latitude, longitude, 10, Geocode.Distance.KILOMETERS), null, null, null,
 				null, null, null, null, false).enqueue(new Callback<Search>() {
@@ -54,10 +87,14 @@ public class TweetListFragment extends Fragment {
 				}
 			}
 
-			@Override
-			public void failure(TwitterException exception) {
-				Log.e("TwitterException", exception.getMessage());
-			}
-		});
-	}
+            @Override
+            public void failure(TwitterException exception) {
+                Log.e("TwitterException", exception.getMessage());
+            }
+        });
+    }
+
+    private boolean hasSession() {
+        return TwitterCore.getInstance().getSessionManager().getActiveSession() != null;
+    }
 }
