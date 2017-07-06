@@ -56,7 +56,7 @@ public class TweetListFragment extends Fragment {
         double latitude = User.get().getCurrentLocation().getLatitude();
         double longitude = User.get().getCurrentLocation().getLongitude();
         TwitterCore.getInstance().getApiClient()
-                .getStatusesService().update(binding.messageInput.getText().toString()+ " #pogoraidar",
+                .getStatusesService().update("@pogoraidar "+binding.messageInput.getText().toString(),
                 null, false, latitude, longitude, null, true, false, null).enqueue(new retrofit2.Callback<Tweet>() {
             @Override
             public void onResponse(Call<Tweet> call, Response<Tweet> response) {
@@ -74,10 +74,14 @@ public class TweetListFragment extends Fragment {
     }
 
     private void loadTweets() {
+        if(User.get().getCurrentLocation()==null){
+            Toast.makeText(getContext(), R.string.no_known_position, Toast.LENGTH_SHORT).show();
+            return;
+        }
         double latitude = User.get().getCurrentLocation().getLatitude();
         double longitude = User.get().getCurrentLocation().getLongitude();
 		TwitterApiClient client = TwitterCore.getInstance().getApiClient();
-		client.getSearchService().tweets(null, new Geocode(latitude, longitude, 10, Geocode.Distance.KILOMETERS), null, null, null,
+		client.getSearchService().tweets("@pogoraidar", new Geocode(latitude, longitude, 10, Geocode.Distance.KILOMETERS), null, null, null,
 				null, null, null, null, false).enqueue(new Callback<Search>() {
 			@Override
 			public void success(Result<Search> result) {
