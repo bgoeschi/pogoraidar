@@ -5,8 +5,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:paddingStart="16dp"
-		android:paddingEnd="16dp">
+		android:paddingStart="@dimen/keyline_1"
+		android:paddingEnd="@dimen/keyline_1">
 
 		<ScrollView
 			android:layout_width="match_parent"
