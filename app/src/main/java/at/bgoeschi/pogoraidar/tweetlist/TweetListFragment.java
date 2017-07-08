@@ -1,4 +1,4 @@
-package bgoeschi.at.pogoraidar.tweetlist;
+package at.bgoeschi.pogoraidar.tweetlist;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -19,9 +19,9 @@ import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.params.Geocode;
 
-import bgoeschi.at.pogoraidar.R;
-import bgoeschi.at.pogoraidar.User;
-import bgoeschi.at.pogoraidar.databinding.FragmentTweetListBinding;
+import at.bgoeschi.pogoraidar.R;
+import at.bgoeschi.pogoraidar.User;
+import at.bgoeschi.pogoraidar.databinding.FragmentTweetListBinding;
 import retrofit2.Call;
 import retrofit2.Response;
 

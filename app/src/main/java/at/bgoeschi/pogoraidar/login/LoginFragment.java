@@ -1,4 +1,4 @@
-package bgoeschi.at.pogoraidar.login;
+package at.bgoeschi.pogoraidar.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 
-import bgoeschi.at.pogoraidar.R;
-import bgoeschi.at.pogoraidar.databinding.FragmentLoginBinding;
+import at.bgoeschi.pogoraidar.R;
+import at.bgoeschi.pogoraidar.databinding.FragmentLoginBinding;
 
 public class LoginFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package bgoeschi.at.pogoraidar;
+package at.bgoeschi.pogoraidar;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

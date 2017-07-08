@@ -1,4 +1,4 @@
-package bgoeschi.at.pogoraidar;
+package at.bgoeschi.pogoraidar;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,8 +16,8 @@ import android.util.Log;
 
 import com.twitter.sdk.android.core.TwitterCore;
 
-import bgoeschi.at.pogoraidar.login.LoginFragment;
-import bgoeschi.at.pogoraidar.tweetlist.TweetListFragment;
+import at.bgoeschi.pogoraidar.login.LoginFragment;
+import at.bgoeschi.pogoraidar.tweetlist.TweetListFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnTwitterResultListener {
 
