@@ -4,4 +4,6 @@
 	<string name="send_message">post raid</string>
 	<string name="message_sent_successfully">message sent</string>
 	<string name="no_known_position">No last known position. Close and restart app.</string>
+	<string name="network_provider_disabled">Your network-location is disabled. Please go to settings and enable them.</string>
+	<string name="settings">Settings</string>
 </resources>
