@@ -21,13 +21,13 @@ import android.view.View;
 import com.twitter.sdk.android.core.TwitterCore;
 
 import at.bgoeschi.pogoraidar.login.LoginFragment;
-import at.bgoeschi.pogoraidar.tweetlist.TweetListFragment;
+import at.bgoeschi.pogoraidar.tweetlist.view.TweetListFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnTwitterResultListener {
 
 	private static final int PERMISSIONS_LOCATION_REQUEST = 22;
 	private static final int LOCATION_SETTINGS_REQUEST = 21;
-	private final String TAG_CURRENT_FRAGMENT = "currentFragment";
+	private static final String TAG_CURRENT_FRAGMENT = "currentFragment";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
