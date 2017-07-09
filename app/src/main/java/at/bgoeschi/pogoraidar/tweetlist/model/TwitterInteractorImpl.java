@@ -63,7 +63,7 @@ public class TwitterInteractorImpl implements TweetListContract.TwitterInteracto
 		}
 
 		TwitterApiClient client = TwitterCore.getInstance().getApiClient();
-		client.getSearchService().tweets(null, new Geocode(location.getLatitude(), location.getLongitude(), 1000, Geocode.Distance
+		client.getSearchService().tweets("@pogoraidar", new Geocode(location.getLatitude(), location.getLongitude(), 10, Geocode.Distance
 				.KILOMETERS), null, null, null, null, null, null, null, false).enqueue(new Callback<Search>() {
 			@Override
 			public void success(Result<Search> result) {
